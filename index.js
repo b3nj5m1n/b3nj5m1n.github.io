@@ -1,6 +1,7 @@
 function init() {
     var projects = [
         ["Memory Test", "src/projects/memory-test/index.html"],
+        ["base16 Previewer", "src/projects/base16-viewer/index.html"],
     ]
 
     list_div = '';
