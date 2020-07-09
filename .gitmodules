@@ -1,0 +1,3 @@
+[submodule "src/projects/memory-test"]
+	path = src/projects/memory-test
+	url = git@github.com:b3nj5m1n/memory-test.git
