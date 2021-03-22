@@ -4,3 +4,6 @@
 [submodule "src/projects/base16-viewer"]
 	path = src/projects/base16-viewer
 	url = https://github.com/b3nj5m1n/base16-viewer.git
+[submodule "src/projects/mentari"]
+	path = src/projects/mentari
+	url = https://github.com/b3nj5m1n/mentari.git
