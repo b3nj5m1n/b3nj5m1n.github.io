@@ -10,3 +10,6 @@
 [submodule "src/projects/reading-progress"]
 	path = src/projects/reading-progress
 	url = https://github.com/b3nj5m1n/reading-progress
+[submodule "src/modules/3-style-trainer"]
+	path = src/modules/3-style-trainer
+	url = https://github.com/b3nj5m1n/3-style-trainer
