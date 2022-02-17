@@ -1,5 +1,6 @@
 function init() {
     var projects = [
+        ["3-Style Trainer", "src/modules/3-style-trainer/dist/index.html"],
         ["Mentari", "src/projects/mentari/index.html"],
         ["Memory Test", "src/projects/memory-test/index.html"],
         ["base16 Previewer", "src/projects/base16-viewer/index.html"],
