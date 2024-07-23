@@ -1,6 +1,6 @@
-#!/bin/sh
+#!/usr/bin/env sh
 
-/bin/bash "./update-modules.sh"
+/usr/bin/env sh "./update-modules.sh"
 
 path="$PWD"
 

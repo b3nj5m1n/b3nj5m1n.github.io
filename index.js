@@ -1,5 +1,6 @@
 function init() {
     var projects = [
+        ["Whatsmap", "src/projects/whatsmap/index.html"],
         ["3-Style Trainer", "src/projects/3-style-trainer/index.html"],
         ["Mentari", "src/projects/mentari/index.html"],
         ["Memory Test", "src/projects/memory-test/index.html"],

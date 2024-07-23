@@ -13,3 +13,6 @@
 [submodule "src/modules/3-style-trainer"]
 	path = src/modules/3-style-trainer
 	url = https://github.com/b3nj5m1n/3-style-trainer
+[submodule "src/projects/whatsmap"]
+	path = src/projects/whatsmap
+	url = git@github.com:b3nj5m1n/whatsmap.git
