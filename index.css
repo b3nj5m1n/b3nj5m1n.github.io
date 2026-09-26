@@ -9,11 +9,29 @@ html, body {
 }
 
 body {
-    height: 100%;
-    background-color: #151515;
+    /* height: 100%; */
+    min-height: 100vh;
+    /* background-color: #151515; */
+    background:
+      linear-gradient(0deg,
+          #e4030305,
+          #ff8c0005,
+          #ffed0005,
+          #00802605,
+          #004cff05,
+          #73298205,
+          #004cff05,
+          #00802605,
+          #ffed0005,
+          #ff8c0005
+      ),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='300' height='300'%3E%3Cfilter id='n' x='0' y='0'%3E%3CfeTurbulence type='turbulence' baseFrequency='0.5' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' fill='%23151515'/%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.4'/%3E%3C/svg%3E");
+    background-repeat: repeat;
+    /* background-size: 1200% 1200%; */
 }
 
 #project-list {
+    /* display: none; /* TODO */ */
     background-color: #17151700;
     width: 50%;
     max-width: 600px;
@@ -22,9 +40,16 @@ body {
     margin-top: 5%;
     padding: 25px;
     text-align: center;
-    border: 5px solid #f5f5f5;
+    /* border: 5px solid #f5f5f5; */
     z-index: 1;
-    backdrop-filter: blur(4px);
+    /* backdrop-filter: blur(4px); */
+    backdrop-filter: blur(10px) saturate(180%);
+    /* border: 1px solid rgba(255, 255, 255, 0.05); */
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+    border-image: linear-gradient(270deg, #5bcefa, #f5a9b8, #ffffff, #f5a9b8, #5bcefa) 1;
+    border-width: 1px;
+    border-style: solid;
+    /* border-radius: 8px; */
 }
 
 #project-tabs {
@@ -42,6 +67,9 @@ body {
 
 .project-tab {
     color: white;
+    font-family: "Poppins", sans-serif;
+    font-weight: 300;
+    font-style: normal;
 }
 .project-tab:hover {
     cursor: pointer;
@@ -49,7 +77,8 @@ body {
 
 .project-tab-active {
     color: white;
-    text-decoration: underline;
+    /* text-decoration: underline; */
+    font-weight: 800;
 }
 
 #project-list-items {
@@ -73,18 +102,28 @@ body {
     color: #f5f5f5;
     text-decoration: none;
     margin-right: 10px;
+    font-family: "Poppins", sans-serif;
+    font-weight: 600;
+    font-style: normal;
 }
 
 .project-div p {
     color: #bbbbbb;
     text-decoration: none;
     display: inline;
+    font-family: "Poppins", sans-serif;
+    font-weight: 300;
+    font-style: normal;
 }
 
 #projects-header-container p {
+    color: white;
     font-size: 5vw;
     display: inline;
     text-align: right;
+    font-family: "Poppins", sans-serif;
+    font-weight: 500;
+    font-style: normal;
 }
 
 #backgroundCanvas {
@@ -93,5 +132,33 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: -1;
+    z-index: 0;
+}
+
+.footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    color: white;
+    text-align: center;
+    z-index: 1;
+    background:
+      linear-gradient(90deg,
+          #e4030305,
+          #ff8c0005,
+          #ffed0005,
+          #00802605,
+          #004cff05,
+          #73298205,
+          #004cff05,
+          #00802605,
+          #ffed0005,
+          #ff8c0005
+      ),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='300' height='300'%3E%3Cfilter id='n' x='0' y='0'%3E%3CfeTurbulence type='turbulence' baseFrequency='0.5' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' fill='%23151515'/%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.4'/%3E%3C/svg%3E");
+    background-repeat: repeat;
+    font-family: "Poppins", sans-serif;
+    font-weight: 200;
+    font-style: normal;
 }

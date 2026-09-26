@@ -29,6 +29,21 @@ const projects_lookup = {
     "other": projects_other,
 }
 
+const footerTextShown = "Click anywhere on the background to hide the projects card.";
+const footerTextHidden = "This is a simulation of the n-body problem. Don't get too close to any of the bodies, or you might steal some of their mass. (Click anywhere except <a onclick='cycle_configs()'>here</a> to show the projects card again)";
+
+var index_configuration = 5;
+
+function cycle_configs() {
+    index_configuration = ( index_configuration + 1 ) % possible_states.length;
+    ctx.save();
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    ctx.clearRect(0, 0, backgroundCanvas.width, backgroundCanvas.height);
+    ctx.restore();
+    masses = initial_masses.slice();
+    reset();
+}
+
 function render_projects(tab) {
     let projects = projects_lookup[tab];
     list_div = '';
@@ -53,31 +68,37 @@ function init() {
         headerContainer.innerHTML += "<p>" + text[i] + "</p>"
     }
 
-    roatateHeaderColors();
+    // roatateHeaderColors();
 
     window.backgroundCanvas = document.getElementById("backgroundCanvas");
     const observer = new ResizeObserver((entries) => {
         const entry = entries.find((entry) => entry.target === backgroundCanvas);
-        backgroundCanvas.width = entry.devicePixelContentBoxSize[0].inlineSize;
-        backgroundCanvas.height = entry.devicePixelContentBoxSize[0].blockSize;
+        /* backgroundCanvas.width = entry.devicePixelContentBoxSize[0].inlineSize;
+        backgroundCanvas.height = entry.devicePixelContentBoxSize[0].blockSize; */
+        // resizeCanvas(entry.devicePixelContentBoxSize[0].inlineSize, entry.devicePixelContentBoxSize[0].blockSize);
+        resizeCanvas(window.innerWidth, window.innerHeight);
+        reset();
         /* width = backgroundCanvas.clientWidth;
         height = backgroundCanvas.clientHeight; */
     });
-    observer.observe(backgroundCanvas)
+    observer.observe(document.body);
+    reset();
     setInterval(drawCanvas, 1);
-    // drawCanvas();
+    document.addEventListener("mousemove", handleMouse);
+    document.addEventListener("keypress", handleKey);
+    document.getElementById("footer-text").innerHTML = footerTextShown;
 }
 
 var colors = [
     "#FF0018", "#FFA52C", "#FFFF41", "#008018", "#0000F9", "#86007D"
 ]
-function roatateHeaderColors() {
+/* function roatateHeaderColors() {
     colors.push(colors.shift());
     var letters = document.getElementById("projects-header-container").querySelectorAll("p");
     for (var i = 0, len = letters.length; i < len; i++) {
         letters[i].style.color = colors[i % colors.length];
     }
-}
+} */
 
 let possible_states = [
     [ // Broucke
@@ -151,12 +172,13 @@ let possible_states = [
     ],
 ]
 
-var current_state = possible_states[5];
+var current_state;
 
 const G = 1;
-const masses = [
+const initial_masses = [
     1, 1, 1, 1, 1, 1, 1, 1, 1, 1
 ]
+var masses = initial_masses.slice();
 
 function norm(point) {
     return Math.sqrt(point.x * point.x + point.y * point.y + point.z * point.z);
@@ -223,17 +245,104 @@ function step(y_n, h) {
     return addStackedVectors(y_n, scaleStackedVector(h/6, weightedSum));
 }
 
-var frame = 0;
+// https://stackoverflow.com/a/17130415
+function  getMousePos(canvas, evt) {
+  var rect = canvas.getBoundingClientRect(),
+    scaleX = canvas.width / rect.width,
+    scaleY = canvas.height / rect.height;
+  return {
+    x: (evt.clientX - rect.left) * scaleX,
+    y: (evt.clientY - rect.top) * scaleY
+  }
+}
+
+let mouseX = 0;
+let mouseY = 0;
+// Store current cursor position in global variables
+handleMouse = function(e) {
+    let res = getMousePos(backgroundCanvas, e);
+    mouseX = res.x;
+    mouseY = res.y;
+}
+
+function toggle() {
+    let card = document.getElementById("project-list");
+    let shown = card.style.display == "none";
+    card.style.display = ( shown ? "" : "none" );
+    let footerText = document.getElementById("footer-text");
+    footerText.innerHTML = ( shown ? footerTextShown : footerTextHidden );
+}
+
+// Toggle projects card on any keystroke
+handleKey = function(e) {
+    toggle();
+}
+
+getCanvasCoords = function(ctx, screenX, screenY) {
+  let matrix = ctx.getTransform();
+  var imatrix = matrix.invertSelf();
+  let x = screenX * imatrix.a + screenY * imatrix.c + imatrix.e;
+  let y = screenX * imatrix.b + screenY * imatrix.d + imatrix.f;
+  return [x, y];
+}
+
+/* function generateBackground() {
+    backgroundCanvas.offscreenCanvas = document.createElement("canvas");
+    backgroundCanvas.offscreenCanvas.width = backgroundCanvas.width;
+    backgroundCanvas.offscreenCanvas.height = backgroundCanvas.height;
+
+    for (let i = -backgroundCanvas.width/2; i < backgroundCanvas.width/2; i++) {
+        for (let j = -backgroundCanvas.height/2; j < backgroundCanvas.height/2; j++) {
+            let color = Math.random()*255;
+            ctx.fillStyle = `rgba(${color}, ${color}, ${color}, 1)`;
+            let offset_x = Math.random();
+            let offset_y = Math.random();
+            let offset_size = Math.random();
+            ctx.fillRect(i+offset_x,j+offset_y,.1 * (1+offset_size),.1 * (1+offset_size));
+        }
+    }
+
+    backgroundGenerated = true;
+} */
+
+function resizeCanvas(width, height) {
+    const dpr = window.devicePixelRatio || 1;
+    backgroundCanvas.width = Math.round(width * dpr);
+    backgroundCanvas.height = Math.round(height * dpr);
+    backgroundCanvas.style.width = `${width}px`;
+    backgroundCanvas.style.height = `${height}px`;
+    ctx.setTransform(50 * dpr, 0, 0, 50 * dpr, ( width * dpr )/2, ( height * dpr )/2);
+}
+
+var ctx;
+var frame;
+// var backgroundGenerated = false;
+function reset() {
+    current_state = possible_states[index_configuration];
+    ctx = backgroundCanvas.getContext("2d");
+    // resizeCanvas(window.innerWidth, window.innerHeight);
+    frame = 0;
+}
 
 function drawCanvas() {
     frame += 1;
-    var ctx = backgroundCanvas.getContext("2d");
-    ctx.setTransform(50, 0, 0, 50, window.innerWidth/2, window.innerHeight/2);
-    /* ctx.canvas.width  = window.innerWidth;
-    ctx.canvas.height = window.innerHeight; */
+    // Draw bodies at current positions
     for (let i = 0; i < current_state.length/2; i++) {
         ctx.fillStyle = colors[i % colors.length];
         ctx.fillRect(current_state[i].x,current_state[i].y,.01,.01);
     }
+    // RK4 step
     current_state = step(current_state, 0.005)
+
+    // Get coordinates of cursor position on canvas
+    let mouse_x, mouse_y;
+    [mouse_x, mouse_y] = getCanvasCoords(ctx, mouseX, mouseY);
+    // Change mass of bodies based on cursor position
+    for (let i = 0; i < current_state.length/2; i++) {
+        let dist = norm(addVectors3(current_state[i], {x: -mouse_x, y: -mouse_y, z: 0}));
+        if ( dist > 0.3 ) continue;
+        masses[i] = masses[i] - 1/(Math.pow(dist, 3) + 10000);
+        ctx.fillStyle = colors[i % colors.length];
+        ctx.fillRect(mouse_x,mouse_y,.01,.01);
+    }
 }
