@@ -11,8 +11,16 @@
 </head>
 
 <body onload="init();">
+    <canvas id="backgroundCanvas"></canvas>
     <div id="project-list">
         <div id="projects-header-container">
+        </div>
+        <div id="project-tabs">
+            <a onclick='render_projects("online")' class="project-tab project-tab-active" id="project-tab-online">Online</a>
+            <a onclick='render_projects("popular")' class="project-tab" id="project-tab-popular">Popular</a>
+            <a onclick='render_projects("other")' class="project-tab" id="project-tab-other">Other</a>
+        </div>
+        <div id="project-list-items">
         </div>
     </div>
 </body>
